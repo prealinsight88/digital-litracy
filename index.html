@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="UTF-8"><meta name="author" content="Christopher Michael Lauw, M.Kom"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tech Lab · Modul 4 Etika Digital, Hak Cipta &amp; Game Detektif Hoaks</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{--bg:#070d1a;--card:#0e1a2f;--tx:#e6f1ff;--mut:#8aa0c2;--bd:#1f3558;--pri:#22d3ee;--pri2:#8b5cf6;--ok:#22c55e;--bad:#f43f5e;--soft:#12264a;--gold:#fbbf24;--grid:rgba(34,211,238,.07);color-scheme:dark;box-sizing:border-box;padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#eaf2fb;--card:#fff;--tx:#0b1b33;--mut:#51648a;--bd:#c8d6ec;--pri:#0891b2;--pri2:#6d28d9;--soft:#e0ecfb;--gold:#b45309;--grid:rgba(8,145,178,.09);--bad:#e11d48;color-scheme:light}}
+:root[data-theme="light"]{--bg:#eaf2fb;--card:#fff;--tx:#0b1b33;--mut:#51648a;--bd:#c8d6ec;--pri:#0891b2;--pri2:#6d28d9;--soft:#e0ecfb;--gold:#b45309;--grid:rgba(8,145,178,.09);--bad:#e11d48;color-scheme:light}
+html{scroll-behavior:smooth;scroll-padding-top:100px;background:var(--bg)}
+body{margin:0;color:var(--tx);font-family:Poppins,system-ui,sans-serif;background:linear-gradient(var(--grid) 1px,transparent 1px) 0 0/38px 38px,linear-gradient(90deg,var(--grid) 1px,transparent 1px) 0 0/38px 38px,radial-gradient(circle at 15% 0,color-mix(in srgb,var(--pri2) 22%,var(--bg)),var(--bg) 55%);background-attachment:fixed}
+a{color:inherit;text-decoration:none;white-space:nowrap}nav a:hover{color:var(--pri)}
+.mono,h2.t{font-family:'JetBrains Mono',monospace}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:.9rem;padding:1.1rem;transition:.25s}
+.card.hv:hover,.lv:hover:not(.lock){transform:translateY(-4px);border-color:var(--pri);box-shadow:0 0 22px color-mix(in srgb,var(--pri) 35%,transparent)}
+.btn{background:linear-gradient(135deg,var(--pri2),var(--pri));color:#04121f;border:0;border-radius:.7rem;padding:.6rem 1.1rem;font:600 .9rem Poppins,sans-serif;cursor:pointer;transition:.2s;display:inline-block}
+.btn:hover{transform:scale(1.04);box-shadow:0 0 16px color-mix(in srgb,var(--pri) 50%,transparent)}
+.btn.alt,.btn.g{background:var(--soft);color:var(--pri);border:1px solid var(--bd)}
+.inp{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--bd);border-radius:.6rem;padding:.55rem .75rem;font:inherit}
+.inp:focus{outline:2px solid var(--pri)}
+label.l{font-size:.8rem;font-weight:600;color:var(--mut);display:block;margin:.6rem 0 .2rem}
+h2.t{font-size:1.35rem;font-weight:700;margin:0 0 .25rem}h2.t::before{content:'> ';color:var(--pri)}
+.sub{color:var(--mut);font-size:.9rem;margin-bottom:1rem}
+.sec{padding:2.2rem 0;opacity:0;transform:translateY(24px);transition:.7s}.sec.show{opacity:1;transform:none}
+.chip{font-size:.72rem;padding:.25rem .6rem;border-radius:99px;background:var(--soft);color:var(--mut);transition:.3s;border:1px solid var(--bd)}
+.chip.on{background:var(--ok);color:#04120a;border-color:var(--ok)}
+.tab{padding:.4rem .85rem;border-radius:99px;border:1px solid var(--bd);cursor:pointer;background:var(--card);color:var(--tx);font-weight:500}
+.tab.on{background:var(--pri);color:#04121f;border-color:var(--pri)}
+.fb-ok{color:var(--ok)}.fb-bad{color:var(--bad)}.mut{color:var(--mut)}
+details summary{cursor:pointer;font-weight:600}
+.hero{position:relative;overflow:hidden;background:#070d1a;color:#e6f1ff;border:1px solid var(--pri);border-radius:1.2rem;padding:2rem 1.4rem;box-shadow:0 0 34px rgba(34,211,238,.22)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.3}.hin{position:relative}
+.term{background:rgba(0,0,0,.55);border:1px solid #1f3558;border-radius:.6rem;padding:.7rem .9rem;font-size:.82rem;color:#4ade80;min-height:5.4rem;margin-top:.8rem}
+.lv{cursor:pointer;text-align:center}.lv.lock{opacity:.4;cursor:not-allowed}.lv.cur{border-color:var(--gold);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 6px rgba(251,191,36,.25)}}
+.opt{display:block;width:100%;text-align:left;background:var(--bg);color:var(--tx);border:2px solid var(--bd);border-radius:.8rem;padding:.7rem .9rem;margin:.45rem 0;font:inherit;cursor:pointer;transition:.2s}
+.opt:hover:not(:disabled){border-color:var(--pri);transform:translateX(4px)}.opt.sel{border-color:var(--gold)}.opt.no{border-color:var(--bad);opacity:.55}
+.pop{animation:pop .4s}@keyframes pop{from{transform:scale(.95);opacity:0}}
+.shake{animation:sh .4s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.bar{height:8px;border-radius:9px;background:var(--bd);overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pri2),var(--pri));transition:width .6s}
+.msg{background:var(--bg);border-left:4px solid var(--gold);padding:.8rem 1rem;border-radius:.6rem;font-size:.92rem}
+</style></head><body>
+<header style="position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--card) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--bd);padding-top:env(safe-area-inset-top,0px)">
+<div class="max-w-5xl mx-auto px-4 py-2 flex items-center gap-3 flex-wrap"><b class="mono text-sm" style="color:var(--pri)">&lt;DigitalEthics/&gt;</b>
+<nav class="flex gap-3 text-xs overflow-x-auto" style="color:var(--mut)"><a href="#tp">TP</a><a href="#p1">Praktikum 1</a><a href="#p2">Praktikum 2</a><a href="#p3">Praktikum 3</a><a href="#lab">Lab Maya</a><a href="#game">🎮 Game</a><a href="#lkpd">LKPD</a><a href="#ref">Refleksi</a><a href="#unduh">Unduh</a></nav>
+<button class="tab ml-auto text-xs" onclick="toggleTheme()">🌗 Tema</button></div>
+<div style="height:4px;background:var(--bd)"><div id="bar" style="height:4px;width:0;background:linear-gradient(90deg,var(--pri2),var(--pri));box-shadow:0 0 10px var(--pri);transition:width .5s"></div></div></header>
+<main class="max-w-5xl mx-auto px-4">
+<section id="tp" class="sec">
+ <div class="hero"><canvas id="mx"></canvas><div class="hin"><p class="mono m-0" style="color:#22d3ee;font-size:.75rem">INFORMATIKA // LITERASI DIGITAL // MODUL 4</p>
+<h1 class="text-2xl md:text-4xl font-bold my-2">Etika Digital, Hak Cipta &amp; Kewarganegaraan Digital</h1>
+<p class="text-sm m-0" style="opacity:.85">Platform teknologi interaktif: praktikum, Lab Maya, game 10 level, LKPD, refleksi, dan rapor PDF. Mindful · Meaningful · Joyful.</p>
+<div id="term" class="term mono"></div>
+<div class="flex flex-wrap gap-2 mt-3"><a href="#game" class="btn text-sm">🎮 Langsung ke Game</a><a href="#p1" class="btn alt text-sm">🚀 Mulai Praktikum</a></div></div></div><div class="grid md:grid-cols-3 gap-4 mt-5">
+  <div class="card hv"><div class="text-2xl">🎯</div><b>Tujuan Pembelajaran</b><ul class="text-sm pl-4 mt-2" style="color:var(--mut)"><li>Menjelaskan batasan hukum &amp; hak cipta di ruang digital</li><li>Memilih aset dan lisensi yang aman digunakan</li><li>Membuat sitasi &amp; berkomunikasi santun</li><li>Mengenali dan menangani hoaks</li></ul></div>
+  <div class="card hv"><div class="text-2xl">⚖️</div><b>Batasan Hukum</b><p class="text-sm mt-2" style="color:var(--mut)">Karya digital otomatis dilindungi hak cipta (UU No. 28/2014). Mengunggah atau menyebarkan ulang karya tanpa izin dapat berakibat sanksi. UU ITE juga mengatur penyebaran informasi bohong dan pencemaran nama baik.</p></div>
+  <div class="card hv"><div class="text-2xl">🤝</div><b>Etika &amp; Kewarganegaraan Digital</b><p class="text-sm mt-2" style="color:var(--mut)">Etika berarti menghargai karya, menjaga privasi, bersikap santun, dan memeriksa kebenaran informasi sebelum membagikannya. Jejak digitalmu bersifat permanen.</p></div>
+ </div>
+ <div id="chips" class="flex flex-wrap gap-2 mt-4"></div>
+</section>
+
+<section id="p1" class="sec">
+ <h2 class="t">🖼️ Praktikum 1 · Aset Bebas Royalti &amp; Creative Commons</h2>
+ <p class="sub">Temukan gambar, musik, dan ikon yang legal, lalu pahami lisensinya.</p>
+ <div id="siteTabs" class="flex flex-wrap gap-2 mb-3"></div>
+ <div id="siteBox" class="card"></div>
+ <h3 class="font-semibold mt-6 mb-1">Pemeriksa Lisensi Creative Commons</h3>
+ <p class="sub">Centang kebutuhanmu, lisensi yang cocok akan menyala.</p>
+ <div class="flex flex-wrap gap-4 mb-3 text-sm">
+  <label><input type="checkbox" id="needCom" onchange="ccCheck()"> Untuk tujuan komersial (jualan, iklan)</label>
+  <label><input type="checkbox" id="needMod" onchange="ccCheck()"> Saya ingin mengubah/mengedit karya</label>
+ </div>
+ <div id="ccGrid" class="grid sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+</section>
+
+<section id="p2" class="sec">
+ <h2 class="t">📚 Praktikum 2 · Sitasi &amp; Daftar Pustaka Otomatis</h2>
+ <p class="sub">Menghargai sumber adalah kunci menghindari plagiarisme.</p>
+ <div class="grid md:grid-cols-2 gap-4">
+  <div class="card">
+   <b>Generator Sitasi (gaya APA)</b>
+   <label class="l">Penulis / Lembaga</label><input id="cA" class="inp" placeholder="Kementerian Pendidikan, Kebudayaan, Riset, dan Teknologi" oninput="cite()">
+   <div class="grid grid-cols-2 gap-2"><div><label class="l">Tahun</label><input id="cY" class="inp" placeholder="2024" oninput="cite()"></div><div><label class="l">Tanggal akses</label><input id="cD" type="date" class="inp" oninput="cite()"></div></div>
+   <label class="l">Judul</label><input id="cT" class="inp" placeholder="Panduan Literasi Digital" oninput="cite()">
+   <label class="l">Nama situs / penerbit</label><input id="cS" class="inp" placeholder="Kemdikbud" oninput="cite()">
+   <label class="l">URL</label><input id="cU" class="inp" placeholder="https://..." oninput="cite()">
+   <div id="cOut" class="mt-3 p-3 rounded-lg text-sm" style="background:var(--soft);min-height:3rem;padding-left:2rem;text-indent:-1.5rem">Hasil sitasi akan muncul di sini.</div>
+   <button class="btn alt mt-2 text-sm" onclick="copyCite()">📋 Salin sitasi</button> <span id="cCopy" class="text-xs"></span>
+  </div>
+  <div class="card text-sm">
+   <b>Panduan Praktis</b>
+   <details class="mt-2" open><summary>📝 Microsoft Word / Google Docs</summary><ol class="pl-5 mt-1" style="color:var(--mut)"><li>Tab <i>References</i> → <i>Insert Citation</i> → <i>Add New Source</i> (Word). Di Google Docs: <i>Tools → Citations</i>.</li><li>Isi data sumber, pilih gaya (APA).</li><li>Klik <i>Bibliography</i> untuk membuat daftar pustaka otomatis.</li></ol></details>
+   <details class="mt-2"><summary>📖 Mendeley</summary><ol class="pl-5 mt-1" style="color:var(--mut)"><li>Pasang Mendeley Reference Manager + Web Importer.</li><li>Simpan artikel dengan satu klik dari browser.</li><li>Di Word, gunakan Mendeley Cite untuk menyisipkan kutipan dan bibliografi.</li></ol></details>
+   <details class="mt-2"><summary>🗂️ Zotero</summary><ol class="pl-5 mt-1" style="color:var(--mut)"><li>Pasang Zotero + Zotero Connector di browser.</li><li>Klik ikon Connector pada halaman sumber untuk menyimpannya.</li><li>Gunakan plugin Word/Docs → <i>Add/Edit Citation</i> dan <i>Add/Edit Bibliography</i>.</li></ol></details>
+   <p class="mt-3 p-2 rounded-lg" style="background:var(--soft)">💡 Selalu periksa hasil otomatis: nama penulis, tahun, dan URL kadang keliru.</p>
+  </div>
+ </div>
+</section>
+
+<section id="p3" class="sec">
+ <h2 class="t">✉️ Praktikum 3 · Netiket: Email Formal</h2>
+ <p class="sub">Tulis email kepada guru/instansi, lalu lihat penilaian netiketmu secara langsung.</p>
+ <div class="grid md:grid-cols-2 gap-4">
+  <div class="card">
+   <label class="l">Kepada</label><input id="eK" class="inp" value="guru.informatika@sekolah.sch.id" oninput="mail()">
+   <label class="l">Subjek</label><input id="eS" class="inp" placeholder="Permohonan Konsultasi Tugas Informatika" oninput="mail()">
+   <label class="l">Salam pembuka</label><input id="eH" class="inp" placeholder="Yth. Bapak/Ibu ..." oninput="mail()">
+   <label class="l">Isi pesan</label><textarea id="eI" rows="4" class="inp" placeholder="Perkenalkan nama dan kelas, sampaikan keperluan dengan jelas dan sopan." oninput="mail()"></textarea>
+   <label class="l">Penutup</label><input id="eP" class="inp" placeholder="Terima kasih atas perhatian Bapak/Ibu." oninput="mail()">
+   <label class="l">Nama &amp; kelas</label><input id="eN" class="inp" placeholder="Nama, Kelas" oninput="mail()">
+   <button class="btn alt mt-3 text-sm" onclick="tpl()">✨ Isi contoh templat</button>
+  </div>
+  <div>
+   <div class="card" style="font-size:.85rem"><b>Pratinjau</b><div id="ePrev" class="mt-2" style="white-space:pre-wrap;color:var(--mut)"></div></div>
+   <div class="card mt-3"><b>Skor netiket: <span id="eScore">0</span>/6</b><ul id="eList" class="text-sm mt-2 pl-0" style="list-style:none"></ul></div>
+  </div>
+ </div>
+</section>
+
+<section id="lab" class="sec">
+ <h2 class="t">🔬 Lab Maya · Detektif Hoaks</h2>
+ <p class="sub">Baca tiap kasus, lalu putuskan: <b>Hoaks</b> atau <b>Fakta</b>? Skor: <span id="hScore">0</span>/4</p>
+ <div id="hoax" class="grid md:grid-cols-2 gap-3"></div>
+ <div id="steps" class="card mt-4" style="display:none">
+  <b>🧭 5 Langkah Menangani Hoaks: Saring sebelum Sharing</b>
+  <ol class="pl-5 mt-2 text-sm" style="color:var(--mut)"><li><b>Berhenti</b> sejenak, jangan langsung membagikan.</li><li><b>Cek sumber</b>: siapa penulisnya, apakah media tepercaya?</li><li><b>Cek fakta</b>: turnbackhoax.id, cekfakta.com, Google Fact Check Explorer.</li><li><b>Cek foto/video</b>: pencarian gambar terbalik (Google Lens, TinEye).</li><li><b>Laporkan &amp; edukasi</b>: laporkan ke platform atau aduankonten.id, lalu luruskan dengan santun.</li></ol>
+ </div>
+</section>
+
+<section id="game" class="sec"><h2 class="t">🎮 Game Misi · Detektif Hoaks</h2>
+<p class="sub">10 level · estimasi 2 JP (±90 menit). Selesaikan semua level agar progres Game tercatat.</p>
+<div class="flex items-center gap-3 mb-2 text-sm"><span id="hud-xp">⭐ 0 XP</span><span id="hud-rk" class="mut"></span></div>
+<div class="bar mb-4"><i id="hud-bar" style="width:0"></i></div><div id="app"></div></section>
+<section id="lkpd" class="sec">
+ <h2 class="t">📝 LKPD · Lembar Kerja Peserta Didik</h2>
+ <p class="sub">Isi semua kolom (jawaban teks minimal 10 karakter).</p>
+ <div class="card">
+  <div class="grid sm:grid-cols-2 gap-3"><div><label class="l">Nama lengkap</label><input id="nm" class="inp" oninput="lk()"></div><div><label class="l">Kelas</label><input id="kl" class="inp" oninput="lk()"></div></div>
+  <div id="lkMC"></div>
+  <label class="l">3. Sebutkan satu aset (gambar/musik/ikon) yang kamu temukan, nama situs, lisensinya, dan tautannya.</label><textarea id="q3" rows="3" class="inp" oninput="lk()"></textarea>
+  <label class="l">4. Tempelkan sitasi hasil praktikum 2 (atau tulis sendiri).</label><textarea id="q4" rows="3" class="inp" oninput="lk()"></textarea>
+  <label class="l">5. Analisis hoaks: tuliskan ciri-ciri hoaks yang kamu temukan di Lab Maya dan langkah pengecekanmu.</label><textarea id="q5" rows="4" class="inp" oninput="lk()"></textarea>
+  <p id="lkSt" class="text-xs mt-3" style="color:var(--mut)"></p>
+ </div>
+</section>
+
+<section id="ref" class="sec">
+ <h2 class="t">💭 Refleksi Pembelajaran</h2>
+ <p class="sub">Tuliskan dengan jujur dan jelas (minimal 15 karakter per kolom).</p>
+ <div class="card">
+  <label class="l">Pemahaman baru apa yang kamu dapat?</label><textarea id="r1" rows="3" class="inp" oninput="rf()"></textarea>
+  <label class="l">Kendala apa yang kamu hadapi dan bagaimana mengatasinya?</label><textarea id="r2" rows="3" class="inp" oninput="rf()"></textarea>
+  <label class="l">Bagaimana kesanmu, dan apa yang akan kamu ubah dalam perilaku digitalmu?</label><textarea id="r3" rows="3" class="inp" oninput="rf()"></textarea>
+  <label class="l">Suasana belajarmu</label><select id="r4" class="inp"><option>😄 Sangat menyenangkan</option><option>🙂 Menyenangkan</option><option>😐 Biasa saja</option><option>😕 Membingungkan</option></select>
+ </div>
+</section>
+
+<section id="unduh" class="sec text-center">
+ <div class="card">
+  <div class="text-4xl">🎉</div>
+  <h2 class="t">Unduh Hasil Kerjamu</h2>
+  <p class="sub">Tombol akan memeriksa kelengkapan tugas lalu membuat rapor PDF.</p>
+  <button class="btn text-lg" onclick="makePDF()">⬇️ Download Hasil (PDF)</button>
+  <p id="dlMsg" class="text-sm mt-3"></p>
+ </div>
+</section>
+</main>
+<footer class="text-center text-xs py-8 mono" style="color:var(--mut)">// Modul 4 Literasi Digital · Kurikulum Merdeka · Mindful, Meaningful, Joyful Learning<br>© 2026 Christopher Michael Lauw, M.Kom. Hak cipta dilindungi.</footer>
+<script>
+
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const done={p1:0,p2:0,p3:0,lab:0,game:0,lkpd:0,ref:0};
+const names={p1:'Praktikum 1',p2:'Praktikum 2',p3:'Praktikum 3',lab:'Lab Maya',game:'Game Misi',lkpd:'LKPD',ref:'Refleksi'};
+function upd(){const n=Object.values(done).filter(Boolean).length;$('#bar').style.width=(n/Object.keys(done).length*100)+'%';
+ $('#chips').innerHTML=Object.keys(done).map(k=>`<span class="chip ${done[k]?'on':''}">${done[k]?'✓':'○'} ${names[k]}</span>`).join('')+`<span class="chip">Progres ${Math.round(n/Object.keys(done).length*100)}%</span>`}
+function mark(k,v=1){if(done[k]!=v){done[k]=v;upd()}}
+function toggleTheme(){const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme:dark)').matches);r.dataset.theme=d?'light':'dark'}
+new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting&&e.target.classList.add('show')),{threshold:.08}).observe&&$$('.sec').forEach(s=>{new IntersectionObserver((es,o)=>es.forEach(e=>{if(e.isIntersecting){s.classList.add('show');o.disconnect()}}),{threshold:.05}).observe(s)});
+
+/* Praktikum 1 */
+const sites=[
+ {n:'Unsplash',i:'📷',t:'Foto',d:'Foto berkualitas tinggi di bawah Unsplash License: boleh dipakai gratis, termasuk komersial. Kredit fotografer sangat dianjurkan.',s:['Buka unsplash.com','Ketik kata kunci, mis. “students coding”','Klik foto → Download','Catat nama fotografer & tautan untuk kredit']},
+ {n:'Pixabay',i:'🎵',t:'Foto, ilustrasi, musik, video',d:'Konten di bawah Pixabay Content License: gratis untuk penggunaan komersial tanpa wajib atribusi. Dilarang menjual ulang tanpa perubahan.',s:['Buka pixabay.com','Pilih tab Images / Music / Videos','Gunakan filter jenis & orientasi','Unduh dan simpan tautan halaman sebagai bukti']},
+ {n:'Freepik',i:'🎨',t:'Vektor, ikon, ilustrasi',d:'Lisensi gratis umumnya mewajibkan atribusi ke Freepik/pembuat. Selalu baca keterangan lisensi pada tiap aset.',s:['Buka freepik.com','Filter “Free”','Unduh dan salin teks atribusi yang disediakan','Tempel atribusi di slide/dokumen']},
+ {n:'Wikimedia Commons',i:'📚',t:'Gambar, audio, video edukatif',d:'Koleksi media terbuka. Setiap berkas punya lisensi sendiri (CC BY, CC BY-SA, domain publik). Periksa kotak “Licensing”.',s:['Buka commons.wikimedia.org','Cari berkas','Baca bagian Licensing','Cantumkan pencipta, lisensi, dan tautan']}];
+$('#siteTabs').innerHTML=sites.map((s,i)=>`<button class="tab" onclick="site(${i})">${s.i} ${s.n}</button>`).join('');
+function site(i){const s=sites[i];$$('#siteTabs .tab').forEach((b,j)=>b.classList.toggle('on',i==j));
+ $('#siteBox').innerHTML=`<b>${s.i} ${s.n}</b> <span class="chip">${s.t}</span><p class="text-sm" style="color:var(--mut)">${s.d}</p><ol class="pl-5 text-sm">${s.s.map(x=>`<li>${x}</li>`).join('')}</ol>`}
+site(0);
+const cc=[
+ {c:'CC0',d:'Domain publik. Bebas dipakai untuk apa pun.',com:1,mod:1},
+ {c:'CC BY',d:'Boleh dipakai &amp; diubah, wajib mencantumkan pencipta.',com:1,mod:1},
+ {c:'CC BY-SA',d:'Seperti CC BY, hasil olahan harus berlisensi sama (ShareAlike).',com:1,mod:1},
+ {c:'CC BY-NC',d:'Boleh diubah, tetapi tidak untuk komersial (NonCommercial).',com:0,mod:1},
+ {c:'CC BY-ND',d:'Boleh komersial, tetapi tidak boleh diubah (NoDerivatives).',com:1,mod:0},
+ {c:'CC BY-NC-ND',d:'Paling ketat: tanpa komersial dan tanpa perubahan.',com:0,mod:0}];
+function ccCheck(){const c=$('#needCom').checked,m=$('#needMod').checked;
+ $('#ccGrid').innerHTML=cc.map(x=>{const ok=(!c||x.com)&&(!m||x.mod);return `<div class="card hv" style="opacity:${ok?1:.45};border-color:${ok?'var(--ok)':'var(--bd)'}"><b>${x.c}</b> ${ok?'✅':'⛔'}<p class="text-xs m-0 mt-1" style="color:var(--mut)">${x.d}</p><p class="text-xs m-0 mt-1">Komersial: ${x.com?'✔':'✖'} · Ubah: ${x.mod?'✔':'✖'}</p></div>`}).join('');mark('p1')}
+ccCheck();done.p1=0;upd();
+
+/* Praktikum 2 */
+let citeTxt='';
+function cite(){const g=id=>$(id).value.trim(),a=g('#cA'),y=g('#cY')||'t.t.',t=g('#cT'),s=g('#cS'),u=g('#cU'),d=g('#cD');
+ if(!a||!t){$('#cOut').textContent='Isi minimal penulis dan judul.';citeTxt='';return}
+ let acc=d?` Diakses ${new Date(d).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}, dari`:'';
+ citeTxt=`${a}. (${y}). ${t}.${s?' '+s+'.':''}${u?acc+' '+u:''}`;
+ $('#cOut').innerHTML=esc(citeTxt).replace(esc(t),`<i>${esc(t)}</i>`);mark('p2')}
+function copyCite(){if(!citeTxt)return;navigator.clipboard&&navigator.clipboard.writeText(citeTxt).catch(()=>{});$('#cCopy').textContent='Tersalin ✓';$('#q4').value||($('#q4').value=citeTxt,lk())}
+
+/* Praktikum 3 */
+function tpl(){eS.value='Permohonan Konsultasi Tugas Informatika';eH.value='Yth. Bapak/Ibu Guru Informatika,';eI.value='Perkenalkan, saya Budi dari kelas X-2. Saya ingin berkonsultasi mengenai tugas Literasi Digital yang diberikan minggu lalu. Mohon informasi waktu yang tepat untuk bertemu.';eP.value='Atas perhatian dan waktu Bapak/Ibu, saya ucapkan terima kasih.';eN.value='Budi Santoso, X-2';mail()}
+function mail(){const s=eS.value.trim(),h=eH.value.trim(),i=eI.value.trim(),p=eP.value.trim(),n=eN.value.trim(),all=[s,h,i,p].join(' ');
+ const rules=[['Subjek jelas (minimal 3 kata, tidak huruf kapital semua)',s.split(/\s+/).filter(Boolean).length>=3&&s!==s.toUpperCase()],
+ ['Salam pembuka formal (mis. Yth./Selamat pagi)',/^(yth|selamat|kepada)/i.test(h)],
+ ['Isi cukup jelas (minimal 50 karakter)',i.length>=50],
+ ['Penutup mengandung ucapan terima kasih',/terima kasih/i.test(p)],
+ ['Nama &amp; kelas dicantumkan',n.length>=3],
+ ['Tanpa tanda seru berlebihan / singkatan gaul',!/!!|\b(gk|ga|bgt|plis|pls|yg|dgn|tdk)\b/i.test(all)&&all.trim().length>0]];
+ const sc=rules.filter(r=>r[1]).length;eScore.textContent=sc;
+ eList.innerHTML=rules.map(r=>`<li>${r[1]?'✅':'⬜'} ${r[0]}</li>`).join('');
+ ePrev.textContent=`Kepada: ${eK.value}\nSubjek: ${s}\n\n${h}\n\n${i}\n\n${p}\n\nHormat saya,\n${n}`;
+ mark('p3',sc>=5?1:0)}
+mail();
+
+/* Lab Maya */
+const cases=[
+ {t:'📢 “DARURAT! Besok semua media sosial akan diblokir. Sebarkan ke 10 grup agar tidak terlambat!”',h:1,e:'Hoaks. Ciri: judul provokatif, memicu panik, memaksa disebar, tanpa sumber resmi.'},
+ {t:'🏛️ Sebuah siaran pers di situs resmi instansi pemerintah memuat imbauan agar waspada tautan hadiah palsu, lengkap dengan tanggal dan narahubung.',h:0,e:'Fakta (kemungkinan besar). Sumber resmi, ada tanggal dan narahubung, dan dapat diverifikasi di situs aslinya.'},
+ {t:'🌿 “Minum rebusan daun ini 3x sehari, sembuh dari semua penyakit dalam sehari. Kata dokter terkenal.” (tanpa nama dokter)',h:1,e:'Hoaks. Klaim berlebihan, “dokter” tanpa nama, tidak ada bukti ilmiah.'},
+ {t:'🌊 Foto banjir besar beredar dengan keterangan “banjir hari ini di kota kita”. Pencarian gambar terbalik menunjukkan foto itu terbit tahun 2019 di daerah lain.',h:1,e:'Hoaks (disinformasi konteks). Foto asli, tetapi waktu dan lokasinya dipalsukan. Selalu cek gambar terbalik.'}];
+const ans={};
+$('#hoax').innerHTML=cases.map((c,i)=>`<div class="card"><p class="text-sm m-0">${c.t}</p><div class="flex gap-2 mt-3"><button class="btn alt text-sm" onclick="hx(${i},1)">🚫 Hoaks</button><button class="btn alt text-sm" onclick="hx(${i},0)">✅ Fakta</button></div><p id="hf${i}" class="text-sm mt-2 m-0"></p></div>`).join('');
+function hx(i,v){if(i in ans)return;ans[i]=v==cases[i].h;const f=$('#hf'+i);f.className='text-sm mt-2 '+(ans[i]?'fb-ok':'fb-bad');f.textContent=(ans[i]?'Tepat! ':'Belum tepat. ')+cases[i].e;
+ const k=Object.keys(ans).length;hScore.textContent=Object.values(ans).filter(Boolean).length;
+ if(k==cases.length){$('#steps').style.display='block';mark('lab')}}
+
+/* LKPD */
+const mcs=[['q1','1. Lisensi manakah yang mengizinkan penggunaan komersial DAN pengubahan karya, asal mencantumkan pencipta?',['CC BY-NC','CC BY-ND','CC BY','CC BY-NC-ND']],
+ ['q2','2. Cara terbaik menghindari plagiarisme ketika mengutip sumber adalah…',['Mengubah beberapa kata saja','Mencantumkan sumber dan membuat daftar pustaka','Menghapus nama penulis asli','Menyalin lalu menyebutnya karya sendiri']],
+ ['q6','6. Subjek email formal kepada guru yang paling tepat adalah…',['TOLONG BALAS SEKARANG!!!','Halo pak','Permohonan Konsultasi Tugas Informatika Kelas X-2','tugas']]];
+$('#lkMC').innerHTML=mcs.map(m=>`<label class="l">${m[1]}</label>`+m[2].map((o,i)=>`<label class="block text-sm py-1"><input type="radio" name="${m[0]}" value="${o}" onchange="lk()"> ${o}</label>`).join('')).join('');
+const val=id=>$(id).value.trim();
+function lk(){const miss=[];if(val('#nm').length<3)miss.push('nama');if(!val('#kl'))miss.push('kelas');
+ mcs.forEach(m=>{if(!document.querySelector(`input[name=${m[0]}]:checked`))miss.push('soal '+m[0].slice(1))});
+ ['q3','q4','q5'].forEach(q=>{if(val('#'+q).length<10)miss.push('soal '+q.slice(1))});
+ $('#lkSt').textContent=miss.length?'Belum lengkap: '+miss.join(', '):'LKPD lengkap ✓';mark('lkpd',miss.length?0:1);return miss}
+function rf(){mark('ref',['#r1','#r2','#r3'].every(i=>val(i).length>=15)?1:0)}
+
+/* PDF */
+function makePDF(){const m=$('#dlMsg'),miss=Object.keys(done).filter(k=>!done[k]).map(k=>names[k]);
+ if(miss.length){m.className='text-sm mt-3 fb-bad';m.textContent='Lengkapi dulu: '+miss.join(', ')+'.';return}
+ if(typeof html2pdf==='undefined'){m.className='text-sm mt-3 fb-bad';m.textContent='Library PDF belum termuat. Periksa koneksi internet.';return}
+ const pick=n=>{const e=document.querySelector(`input[name=${n}]:checked`);return e?e.value:'-'};
+ const row=(q,a)=>`<div style="margin:0 0 10px;page-break-inside:avoid"><b>${esc(q)}</b><div style="border-left:3px solid #4f46e5;padding:3px 0 3px 8px;white-space:pre-wrap">${esc(a)}</div></div>`;
+ const el=document.createElement('div');el.style.cssText='font-family:Arial,sans-serif;font-size:12px;color:#111;background:#fff;padding:8px';
+ el.innerHTML=`<div style="background:#4f46e5;color:#fff;padding:14px;border-radius:8px"><h2 style="margin:0">Laporan Hasil Belajar</h2><div>Modul 4 · Etika Digital, Hak Cipta &amp; Kewarganegaraan Digital</div></div>
+ <p><b>Nama:</b> ${esc(val('#nm'))} &nbsp; <b>Kelas:</b> ${esc(val('#kl'))} &nbsp; <b>Tanggal:</b> ${new Date().toLocaleDateString('id-ID',{dateStyle:'long'})}</p>
+ <p><b>Progres:</b> 100% · <b>Skor netiket:</b> ${eScore.textContent}/6 · <b>Skor Lab Maya:</b> ${hScore.textContent}/4 · <b>Skor Game:</b> ${xp()} XP (${rank(xp())})</p>
+ <h3 style="color:#4f46e5">LKPD</h3>${mcs.map(q=>row(q[1],pick(q[0]))).join('')}${row('3. Aset legal yang ditemukan',val('#q3'))}${row('4. Sitasi',val('#q4'))}${row('5. Analisis hoaks',val('#q5'))}
+ <h3 style="color:#4f46e5">Refleksi</h3>${row('Pemahaman baru',val('#r1'))}${row('Kendala &amp; solusi',val('#r2'))}${row('Kesan &amp; perubahan perilaku',val('#r3'))}${row('Suasana belajar',$('#r4').value)}
+ <h3 style="color:#4f46e5">Email Formal Praktikum 3</h3><div style="white-space:pre-wrap;border:1px solid #ccc;padding:8px">${esc(ePrev.textContent)}</div><p style="font-size:10px;color:#666;text-align:center;margin-top:14px">© 2026 Christopher Michael Lauw, M.Kom</p>`;
+ m.className='text-sm mt-3';m.textContent='Membuat PDF…';
+ html2pdf().set({margin:10,filename:'Hasil_Modul4_'+val('#nm').replace(/\W+/g,'_')+'.pdf',image:{type:'jpeg',quality:.95},html2canvas:{scale:2,backgroundColor:'#ffffff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'},pagebreak:{mode:['css','legacy']}}).from(el).save().then(()=>{m.className='text-sm mt-3 fb-ok';m.textContent='PDF berhasil diunduh ✓'}).catch(()=>{m.className='text-sm mt-3 fb-bad';m.textContent='Gagal membuat PDF. Coba lagi.'})}
+upd();
+
+let gS=0;
+/* ===== DATA 10 LEVEL ===== */
+const L=[
+{t:'Ciri-ciri Hoaks',ic:'🚨',b:'Hoaks sering memakai judul provokatif, memancing emosi (takut/marah), meminta disebarkan segera, dan tidak mencantumkan sumber yang bisa dicek.',
+ type:'mc',q:'Pesan masuk ke grup kelas: “VIRAL!!! Sekolah diliburkan 2 minggu! Share ke semua grup sekarang sebelum dihapus!” Mengapa pesan ini mencurigakan?',
+ o:['Karena menyebut nama sekolah','Karena judul provokatif, menyuruh segera disebar, dan tanpa sumber resmi','Karena dikirim pada pagi hari','Karena ditulis oleh teman sekelas'],a:1,
+ ex:'Tiga tanda klasik hoaks: provokatif, mendesak disebar, tanpa sumber.',dk:'Pernahkah kamu hampir percaya pesan berantai? Apa yang membuatmu tergoda membagikannya?'},
+{t:'Periksa Sumber',ic:'🔎',b:'Sumber tepercaya biasanya memiliki penulis, tanggal terbit, domain resmi, dan menautkan data aslinya.',
+ type:'multi',q:'Pilih 3 tanda sumber berita yang tepercaya:',
+ o:['Ada nama penulis dan tanggal terbit','Domain resmi / media terverifikasi (mis. .go.id, .ac.id)','Memuat tautan ke data atau dokumen asli','Hanya berupa tangkapan layar tanpa tautan','Akun anonim yang baru dibuat','Judul ditulis huruf kapital semua'],a:[0,1,2],
+ ex:'Penulis jelas, domain resmi, dan data yang dapat ditelusuri adalah tanda sumber yang dapat dipercaya.',dk:'Sebutkan 2 sumber informasi yang biasa kamu percaya. Mengapa kamu mempercayainya?'},
+{t:'Foto & Video Palsu',ic:'🖼️',b:'Gambar lama sering dipakai ulang dengan keterangan baru (disinformasi konteks). Pencarian gambar terbalik membantu menelusuri asalnya.',
+ type:'mc',q:'Foto banjir besar beredar dengan keterangan “banjir kota kita hari ini”. Langkah pertama terbaik untuk mengeceknya?',
+ o:['Langsung membagikan agar warga waspada','Menghitung jumlah like pada postingan','Pencarian gambar terbalik (Google Lens/TinEye)','Bertanya di kolom komentar'],a:2,
+ ex:'Gambar terbalik menunjukkan kapan dan di mana foto pertama kali terbit.',dk:'Mengapa foto asli pun bisa menjadi hoaks jika keterangannya salah?'},
+{t:'Hak Cipta',ic:'©️',b:'Karya digital otomatis dilindungi hak cipta (UU No. 28 Tahun 2014). Mengambil gambar dari hasil pencarian umum tanpa izin berisiko melanggar hukum.',
+ type:'mc',q:'Kamu membuat poster lomba berhadiah dan butuh foto. Pilihan yang paling aman dan etis?',
+ o:['Unduh dari Google Images yang paling bagus','Ambil dari akun Instagram orang lain dan beri tanda ©','Cari di Unsplash/Pixabay atau Wikimedia Commons, lalu cantumkan kredit sesuai lisensi','Screenshot dari situs berita'],a:2,
+ ex:'Situs aset berlisensi terbuka memberi izin yang jelas. Tetap baca syarat lisensinya.',dk:'Apa yang terasa tidak adil jika karyamu dipakai orang lain tanpa izin?'},
+{t:'Lisensi Creative Commons',ic:'🧩',b:'BY = wajib cantumkan pencipta, NC = tidak boleh komersial, ND = tidak boleh diubah, SA = hasil olahan berlisensi sama.',
+ type:'mc',q:'Sebuah foto berlisensi CC BY-NC-ND. Kamu ingin memotongnya lalu menjual stiker. Bolehkah?',
+ o:['Boleh, asal ada kredit','Tidak boleh: NC melarang komersial dan ND melarang perubahan','Boleh, karena hanya dipotong sedikit','Boleh jika stikernya dijual murah'],a:1,
+ ex:'Dua pembatasan sekaligus: tidak untuk komersial (NC) dan tidak boleh diubah (ND).',dk:'Lisensi apa yang akan kamu pilih untuk karyamu sendiri, dan mengapa?'},
+{t:'Sitasi & Daftar Pustaka',ic:'📚',b:'Sitasi menunjukkan sumber ide/data. Unsur penting: penulis, tahun, judul, penerbit/situs, URL, dan tanggal akses.',
+ type:'mc',q:'Kamu mengutip data dari sebuah artikel untuk tugas. Cara yang benar?',
+ o:['Menyalin lalu mengganti beberapa kata','Menyebut “dari internet”','Menyatakan data itu hasil risetmu sendiri','Mengutip dengan tanda kutip/parafrase dan mencantumkan sumber di daftar pustaka'],a:3,
+ ex:'Parafrase atau kutipan langsung wajib disertai sumber. Mendeley/Zotero membantu membuatnya otomatis.',dk:'Apa bedanya terinspirasi, mengutip, dan menjiplak (plagiarisme)?'},
+{t:'Netiket',ic:'🤝',b:'Netiket: bahasa santun, tidak mempermalukan, mengoreksi dengan tenang. Jejak digital bersifat permanen.',
+ type:'mc',q:'Temanmu membagikan hoaks di grup kelas. Komentar yang paling beretika?',
+ o:['“Bodoh banget sih, hoaks gini disebar!”','“Maaf, sepertinya info ini kurang tepat. Ini hasil cek faktanya: [tautan]. Mohon dihapus ya.”','Diam saja agar tidak ribut','Membalas dengan membagikan hoaks lain'],a:1,
+ ex:'Koreksi dengan santun, sertakan bukti, dan hindari mempermalukan.',dk:'Bagaimana perasaanmu bila dikoreksi di depan banyak orang? Apa cara yang lebih baik?'},
+{t:'Hoaks Hadiah & Phishing',ic:'🎣',b:'Penipuan berkedok hadiah meminta data pribadi atau kode OTP. Menyebar informasi bohong yang merugikan orang lain dapat berurusan dengan UU ITE.',
+ type:'mc',q:'SMS: “Selamat! Anda menang Rp50 juta. Klik tautan dan masukkan kode OTP.” Tindakanmu?',
+ o:['Klik tautan, sekadar melihat','Berikan OTP agar hadiah cepat cair','Teruskan ke teman agar mereka ikut menang','Jangan klik atau beri OTP, blokir nomor, dan laporkan'],a:3,
+ ex:'OTP bersifat rahasia. Tidak ada hadiah sah yang meminta kode OTP.',dk:'Data pribadi apa saja yang tidak boleh kamu bagikan di internet?'},
+{t:'Deepfake & Konten AI',ic:'🤖',b:'Teknologi AI dapat memalsukan wajah dan suara. Tanda: gerak bibir tidak sinkron, kualitas janggal, dan sumber tidak resmi.',
+ type:'mc',q:'Video seorang tokoh terkenal mengajak transfer uang untuk “investasi pasti untung”. Bibirnya tampak tak sinkron. Langkah terbaik?',
+ o:['Percaya karena wajahnya jelas','Cek akun resmi tokoh dan situs cek fakta sebelum menanggapi','Transfer sedikit dulu sebagai percobaan','Bagikan agar teman bisa untung'],a:1,
+ ex:'Verifikasi lewat kanal resmi. Janji untung pasti adalah tanda penipuan.',dk:'Bagaimana kamu menjelaskan bahaya deepfake kepada keluarga di rumah?'},
+{t:'BOSS: Tangani Hoaks',ic:'👑',b:'Misi akhir: susun urutan penanganan hoaks yang benar. Ingat prinsip “Saring sebelum Sharing”.',
+ type:'order',q:'Klik langkah-langkah berikut sesuai urutan yang benar (dari pertama ke terakhir):',
+ o:['Laporkan konten ke platform','Berhenti sejenak, jangan langsung menyebarkan','Klarifikasi dengan santun kepada yang terlanjur menerima','Telusuri sumber dan penulis','Cari klarifikasi di situs cek fakta (mis. turnbackhoax.id)'],a:[1,3,4,0,2],
+ ex:'Berhenti → telusuri sumber → cek fakta → laporkan → klarifikasi. Kamu resmi menjadi Detektif Hoaks!',dk:'Rencana aksi apa yang akan kamu lakukan minggu ini untuk menjaga ruang digital tetap sehat?'}];
+
+/* ===== STATE ===== */
+let st={name:'',res:{}};
+try{const s=JSON.parse(localStorage.getItem('hx5')||'null');if(s)st=s}catch(e){}
+const save=()=>{try{localStorage.setItem('hx5',JSON.stringify(st))}catch(e){}};
+const xp=()=>Object.values(st.res).reduce((a,b)=>a+b,0);
+const nDone=()=>Object.keys(st.res).length;
+const rank=x=>x>=900?'🏆 Detektif Legendaris':x>=700?'🥇 Detektif Ahli':x>=500?'🥈 Penjaga Fakta':'🥉 Detektif Pemula';
+let cur=0,lives=3,wrong=0,sel=[];
+function hud(){$('#hud-xp').textContent='⭐ '+xp()+' XP';$('#hud-rk').textContent=nDone()+'/10 misi';$('#hud-bar').style.width=nDone()*10+'%';if(nDone()>=10)mark('game')}
+const app=h=>{$('#app').innerHTML=`<div class="pop">${h}</div>`;hud();gS&&$('#game').scrollIntoView({behavior:'smooth',block:'start'})};
+
+/* ===== SCREENS ===== */
+function intro(){app(`<div class="card text-center">
+ <div class="text-6xl mb-2">🕵️‍♂️</div><h1 class="text-2xl font-bold m-0">Detektif Hoaks</h1>
+ <p class="mut text-sm">Modul 4 Literasi Digital · 10 level · estimasi 2 JP (±90 menit)</p>
+ <p class="text-sm">Kamu adalah detektif digital. Pecahkan 10 misi untuk menghentikan penyebaran hoaks, menghormati hak cipta, dan menjaga etika di ruang digital.</p>
+ <input id="gnm" class="inp my-3" placeholder="Tulis nama detektifmu" value="${esc(st.name)}">
+ <button class="btn" onclick="go()">▶ ${nDone()?'Lanjutkan Misi':'Mulai Misi'}</button>
+ <details class="text-left text-sm mt-4"><summary class="cursor-pointer font-semibold">📋 Alur 2 JP untuk guru</summary>
+  <ul class="mut pl-5 mt-2"><li>10 menit: pemantik &amp; pembagian kelompok</li><li>55 menit: level 1–10 (±5 menit/level)</li><li>15 menit: diskusi tiap level (pertanyaan muncul setelah level selesai)</li><li>10 menit: unduh sertifikat &amp; refleksi</li></ul></details>
+ <button class="btn g mt-3 text-sm" onclick="if(confirm('Hapus semua progres?')){st={name:'',res:{}};save();mark('game',0);intro()}">↺ Reset progres</button></div>`)}
+function go(){const n=$('#gnm').value.trim();if(n.length<2){$('#gnm').style.borderColor='var(--bad)';return}st.name=n;save();map()}
+function map(){const next=L.findIndex((_,i)=>!(i in st.res));
+ app(`<div class="flex items-center mb-3"><h2 class="font-bold m-0">Peta Misi, ${esc(st.name)}</h2><button class="btn g ml-auto text-sm" onclick="intro()">⌂</button></div>
+ <div class="grid grid-cols-2 sm:grid-cols-5 gap-3">${L.map((l,i)=>{const dn=i in st.res,lk=next>=0&&i>next;
+  return `<div class="card lv ${lk?'lock':''} ${i==next?'cur':''}" onclick="${lk?'':`brief(${i})`}"><div class="text-3xl">${lk?'🔒':dn?'✅':l.ic}</div><div class="text-xs font-semibold mt-1">Level ${i+1}</div><div class="text-xs mut">${l.t}</div>${dn?`<div class="text-xs" style="color:var(--gold)">+${st.res[i]} XP</div>`:''}</div>`}).join('')}</div>
+ ${next<0?'<div class="text-center mt-5"><button class="btn" onclick="end()">🎓 Lihat Hasil &amp; Sertifikat</button></div>':''}`)}
+function brief(i){cur=i;lives=3;wrong=0;sel=[];const l=L[i];
+ app(`<div class="card"><span class="mut text-xs">LEVEL ${i+1} / 10</span><h2 class="text-xl font-bold my-1">${l.ic} ${l.t}</h2>
+ <div class="msg my-3"><b>📖 Briefing:</b> ${l.b}</div><button class="btn" onclick="quest()">Mulai Misi →</button> <button class="btn g" onclick="map()">Kembali</button></div>`)}
+function hearts(){return '❤️'.repeat(lives)+'🖤'.repeat(3-lives)}
+function quest(msg=''){const l=L[cur];
+ const opts=l.o.map((o,i)=>{let c='opt';if(l.type=='multi'&&sel.includes(i))c+=' sel';
+  if(l.type=='mc'&&sel.includes(i))c+=' no';
+  const ord=l.type=='order'?(sel.includes(i)?`<b>${sel.indexOf(i)+1}.</b> `:''):'';
+  return `<button class="${c}" ${l.type=='mc'&&sel.includes(i)?'disabled':''} onclick="pick(${i})">${ord}${o}</button>`}).join('');
+ app(`<div class="card"><div class="flex"><span class="mut text-xs">LEVEL ${cur+1} · ${l.t}</span><span class="ml-auto">${hearts()}</span></div>
+ <p class="font-semibold my-3">${l.q}</p>${msg?`<p class="text-sm" style="color:var(--bad)">${msg}</p>`:''}${opts}
+ ${l.type!='mc'?`<div class="mt-3"><button class="btn" onclick="check()">✔ Periksa</button> ${l.type=='order'?'<button class="btn g" onclick="sel=[];quest()">↺ Ulangi</button>':''}</div>`:''}</div>`)}
+function pick(i){const l=L[cur];
+ if(l.type=='mc'){sel.push(i);return i==l.a?win():fail()}
+ if(l.type=='multi'){sel=sel.includes(i)?sel.filter(x=>x!=i):[...sel,i]}
+ else if(!sel.includes(i))sel.push(i);
+ quest()}
+function check(){const l=L[cur];let ok;
+ if(l.type=='multi')ok=sel.length==l.a.length&&l.a.every(x=>sel.includes(x));
+ else ok=sel.length==l.a.length&&l.a.every((x,k)=>sel[k]==x);
+ ok?win():fail()}
+function fail(){wrong++;lives--;const l=L[cur];
+ if(lives<=0){return app(`<div class="card text-center shake"><div class="text-5xl">💔</div><h3 class="font-bold">Nyawa habis!</h3><p class="text-sm mut">Baca kembali briefing, lalu coba lagi.</p><button class="btn" onclick="brief(${cur})">Ulangi Level</button></div>`)}
+ if(l.type!='mc')sel=[];quest('❌ Belum tepat. Pikirkan lagi, sisa nyawa: '+lives)}
+function win(){const l=L[cur],g=Math.max(40,100-30*wrong);st.res[cur]=Math.max(st.res[cur]||0,g);save();
+ app(`<div class="card text-center"><div class="text-5xl">🎉</div><h3 class="font-bold text-xl">Misi Berhasil! +${g} XP</h3>
+ <p class="text-sm">${l.ex}</p><div class="msg text-left my-3"><b>💬 Diskusi kelompok:</b> ${l.dk}</div>
+ <button class="btn" onclick="${cur<9?'map()':'end()'}">${cur<9?'Kembali ke Peta →':'🎓 Lihat Hasil'}</button></div>`)}
+function end(){const x=xp();
+ app(`<div class="card text-center"><div class="text-6xl">🏅</div><h2 class="text-2xl font-bold">${rank(x)}</h2>
+ <p>${esc(st.name)} meraih <b style="color:var(--gold)">${x} XP</b> dari 1000 XP (${nDone()}/10 misi).</p>
+ <p class="text-sm mut">Ingat: Berhenti · Cek sumber · Cek fakta · Laporkan · Klarifikasi dengan santun.</p>
+ <button class="btn" onclick="cert()">⬇️ Unduh Sertifikat (PDF)</button> <button class="btn g" onclick="map()">Peta Misi</button><p id="cm" class="text-sm mt-2"></p></div>`)}
+function cert(){const x=xp(),m=$('#cm');if(typeof html2pdf==='undefined'){m.textContent='Library PDF belum termuat. Periksa koneksi internet.';return}
+ const e=document.createElement('div');e.style.cssText='font-family:Arial,sans-serif;color:#111;background:#fff;padding:30px;border:8px double #4f46e5;text-align:center';
+ e.innerHTML=`<h1 style="color:#4f46e5;margin:10px">SERTIFIKAT DETEKTIF HOAKS</h1><p>Modul 4 · Literasi Digital: Etika Digital, Hak Cipta &amp; Kewarganegaraan Digital</p><p>diberikan kepada</p><h2 style="font-size:28px;margin:8px">${esc(st.name)}</h2><p>yang telah menyelesaikan ${nDone()} dari 10 misi dengan perolehan <b>${x} XP</b></p><h3>${rank(x)}</h3>
+ <table style="margin:12px auto;font-size:12px;text-align:left;border-collapse:collapse">${L.map((l,i)=>`<tr><td style="padding:2px 10px">Level ${i+1}</td><td style="padding:2px 10px">${esc(l.t)}</td><td style="padding:2px 10px">${st.res[i]||0} XP</td></tr>`).join('')}</table>
+ <p style="font-size:12px">${new Date().toLocaleDateString('id-ID',{dateStyle:'long'})}</p><p style="font-size:10px;color:#666">© 2026 Christopher Michael Lauw, M.Kom</p>`;
+ m.textContent='Membuat PDF…';
+ html2pdf().set({margin:12,filename:'Sertifikat_Detektif_Hoaks_'+st.name.replace(/\W+/g,'_')+'.pdf',html2canvas:{scale:2,backgroundColor:'#ffffff'},jsPDF:{unit:'mm',format:'a4',orientation:'portrait'}}).from(e).save().then(()=>m.textContent='Sertifikat terunduh ✓').catch(()=>m.textContent='Gagal membuat PDF.')}
+intro();gS=1;
+
+(function(){const c=document.getElementById('mx');if(!c)return;const x=c.getContext('2d');let W,H,y;
+function sz(){W=c.width=c.offsetWidth;H=c.height=c.offsetHeight;y=Array(Math.floor(W/16)).fill(0).map(()=>Math.random()*H/16)}
+sz();addEventListener('resize',sz);
+if(!matchMedia('(prefers-reduced-motion:reduce)').matches)setInterval(()=>{x.fillStyle='rgba(7,13,26,.12)';x.fillRect(0,0,W,H);x.fillStyle='#22d3ee';x.font='14px monospace';y.forEach((v,i)=>{x.fillText(Math.random()>.5?'1':'0',i*16,v*16);y[i]=v*16>H&&Math.random()>.97?0:v+1})},70)})();
+(async()=>{const t=document.getElementById('term');for(const l of ['> init digital_ethics --modul=4','> load hak_cipta, netiket, anti_hoaks','> status: SIAP ✔']){const d=document.createElement('div');t.appendChild(d);for(const ch of l){d.textContent+=ch;await new Promise(r=>setTimeout(r,28))}await new Promise(r=>setTimeout(r,250))}})();
+</script></body></html>
